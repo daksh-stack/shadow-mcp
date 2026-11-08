@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/tmp/workspace"],
+      "env": {"API_TOKEN": "do-not-keep-this"}
+    },
+    "remote": {
+      "url": "http://127.0.0.1:3333/mcp"
+    }
+  }
+}
