@@ -70,11 +70,10 @@ export function InventoryView({ inventory }: { inventory: Inventory }) {
               <button
                 type="button"
                 onClick={() => setSelectedId(s.id)}
-                className={`w-full rounded border px-3 py-2 text-left ${
-                  selected?.id === s.id
+                className={`w-full rounded border px-3 py-2 text-left ${selected?.id === s.id
                     ? "border-stone-400 bg-stone-900"
                     : "border-stone-800 hover:border-stone-600"
-                }`}
+                  }`}
               >
                 <div className="flex items-center justify-between gap-2">
                   <span className="font-medium">{s.name}</span>
@@ -139,6 +138,27 @@ function ServerDetail({ server }: { server: ServerRecord }) {
             server.listen
               ? `${server.listen.listening ? "listening" : "not listening"} ${server.listen.host}:${server.listen.port}`
               : "not checked"
+          }
+        />
+        <Row k="Merged" v={server.merged_from.join(", ") || "—"} />
+        <Row
+          k="Container"
+          v={
+            server.container
+              ? `${server.container.name} ${server.container.image} ${server.container.ports.join(", ")}`
+              : "—"
+          }
+        />
+        <Row
+          k="TLS"
+          v={server.tls ? server.tls.error ?? server.tls.subject ?? server.tls.scheme : "not probed"}
+        />
+        <Row
+          k="Auth"
+          v={
+            server.auth
+              ? `required=${String(server.auth.required)} status=${String(server.auth.status)}`
+              : "not probed"
           }
         />
       </dl>

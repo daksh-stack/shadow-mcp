@@ -71,6 +71,10 @@ export interface ServerRecord {
   capabilities: CapabilitySnapshot | null;
   risk_flags: RiskFlag[];
   evidence: Evidence[];
+  container: ContainerMatch | null;
+  tls: TlsObservation | null;
+  auth: AuthObservation | null;
+  merged_from: string[];
 }
 
 export interface Coverage {
@@ -90,4 +94,31 @@ export interface Inventory {
   servers: ServerRecord[];
   errors: ScanError[];
   coverage: Coverage;
+}
+
+
+
+export interface ContainerMatch {
+  container_id: string;
+  name: string;
+  image: string;
+  status: string;
+  ports: string[];
+  env_keys: string[];
+  command: string[];
+}
+
+export interface TlsObservation {
+  scheme: string;
+  subject: string | null;
+  issuer: string | null;
+  not_after: string | null;
+  error: string | null;
+}
+
+export interface AuthObservation {
+  required: boolean | null;
+  status: number | null;
+  www_authenticate_schemes: string[];
+  error: string | null;
 }

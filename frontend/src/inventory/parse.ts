@@ -7,6 +7,18 @@ export function parseInventory(raw: string): Inventory {
       "File is JSON but not a shadowmcp inventory. Re-export with: shadowmcp scan --json --out inventory.json",
     );
   }
+
+  for (const server of data.servers) {
+  server.container ??= null;
+  server.tls ??= null;
+  server.auth ??= null;
+  server.merged_from ??= [];
+  server.processes ??= [];
+  server.risk_flags ??= [];
+  server.evidence ??= [];
+  server.env_keys ??= [];
+  server.args ??= [];
+  } 
   return data;
 }
 

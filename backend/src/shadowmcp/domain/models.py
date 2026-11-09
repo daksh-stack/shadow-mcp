@@ -29,6 +29,9 @@ class EvidenceKind(StrEnum):
     PROCESS = "process"
     LISTEN_PORT = "listen_port"
     CAPABILITY_PROBE = "capability_probe"
+    CONTAINER = "container"
+    COMPOSE = "compose"
+    HTTP_PROBE = "http_probe"
 
 
 class Evidence(BaseModel):
@@ -59,6 +62,31 @@ class ListenCheck(BaseModel):
     port: int
     listening: bool
     pids: list[int] = Field(default_factory=list)
+
+
+class ContainerMatch(BaseModel):
+    container_id: str
+    name: str
+    image: str
+    status: str
+    ports: list[str] = Field(default_factory=list)
+    env_keys: list[str] = Field(default_factory=list)
+    command: list[str] = Field(default_factory=list)
+
+
+class TlsObservation(BaseModel):
+    scheme: str
+    subject: str | None = None
+    issuer: str | None = None
+    not_after: str | None = None
+    error: str | None = None
+
+
+class AuthObservation(BaseModel):
+    required: bool | None
+    status: int | None = None
+    www_authenticate_schemes: list[str] = Field(default_factory=list)
+    error: str | None = None
 
 
 class ToolSpec(BaseModel):
@@ -100,6 +128,10 @@ class ServerRecord(BaseModel):
     capabilities: CapabilitySnapshot | None = None
     risk_flags: list[RiskFlag] = Field(default_factory=list)
     evidence: list[Evidence] = Field(default_factory=list)
+    container: ContainerMatch | None = None
+    tls: TlsObservation | None = None
+    auth: AuthObservation | None = None
+    merged_from: list[str] = Field(default_factory=list)
 
 
 class Coverage(BaseModel):
@@ -146,3 +178,6 @@ class EvidenceKind(StrEnum):
     PROCESS = "process"
     LISTEN_PORT = "listen_port"
     CAPABILITY_PROBE = "capability_probe"
+    CONTAINER = "container"
+    COMPOSE = "compose"
+    HTTP_PROBE = "http_probe"

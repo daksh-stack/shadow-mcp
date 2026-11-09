@@ -1,0 +1,36 @@
+{
+  "schema_version": "2",
+  "tool_version": "0.1.0",
+  "scanned_at": "2026-11-09T07:42:21.846490Z",
+  "host": {
+    "os": "Windows-11-10.0.26100-SP0",
+    "hostname": "Daksh-Hardiya"
+  },
+  "servers": [],
+  "errors": [],
+  "coverage": {
+    "clients_requested": [
+      "claude-desktop",
+      "cursor"
+    ],
+    "config_paths_checked": [
+      "C:\\Users\\ADMIN\\AppData\\Roaming\\Claude\\claude_desktop_config.json",
+      "C:\\Users\\ADMIN\\.cursor\\mcp.json"
+    ],
+    "config_paths_found": [],
+    "project_roots": [],
+    "introspect_enabled": false,
+    "limitations": [
+      "Only Claude Desktop and Cursor configs are read by default.",
+      "Project discovery is limited to the roots you pass. There is no home-directory walk.",
+      "Process matches are heuristic and include a confidence and a reason.",
+      "Listen checks cover only hosts and ports already present in configured URLs.",
+      "Capability data is the server's declaration. Tools are never called.",
+      "Env values and header values are not stored.",
+      "Compose files are read only when you pass --compose.",
+      "Docker is queried only for running containers whose metadata contains 'mcp'.",
+      "CIDR targets are generated only when both --cidr and --port are set, and capped at 256.",
+      "HTTP checks are GET-only. They do not complete an MCP handshake."
+    ]
+  }
+}

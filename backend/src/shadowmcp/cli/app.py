@@ -25,14 +25,65 @@ def scan(
             exists=True,
             file_okay=False,
             dir_okay=True,
-            help=("Directory whose .cursor/mcp.json should be read. Repeatable. No default walk."),
+            help=(
+                "Directory whose .cursor/mcp.json should be read. "
+                "Repeatable. No default walk."
+            ),
         ),
     ] = None,
+    compose: Annotated[
+        list[Path] | None,
+        typer.Option(
+            "--compose",
+            exists=True,
+            dir_okay=False,
+            help="Compose file to read. Only services that look like MCP are kept.",
+        ),
+    ] = None,
+    endpoint: Annotated[
+        list[str] | None,
+        typer.Option(
+            "--endpoint",
+            help="Explicit http(s) URL with a port. Repeatable.",
+        ),
+    ] = None,
+    cidr: Annotated[
+        list[str] | None,
+        typer.Option(
+            "--cidr",
+            help="Authorized CIDR. Requires --port. Cap 256 host-port pairs.",
+        ),
+    ] = None,
+    port: Annotated[
+        list[int] | None,
+        typer.Option(
+            "--port",
+            help="Port for --cidr targets. Required with --cidr.",
+        ),
+    ] = None,
+    no_docker: Annotated[
+        bool,
+        typer.Option("--no-docker", help="Skip Docker engine discovery."),
+    ] = False,
+    probe_http: Annotated[
+        bool,
+        typer.Option(
+            "--probe-http",
+            help="GET each discovered URL once. No MCP handshake. No tool calls.",
+        ),
+    ] = False,
+    probe_timeout: Annotated[
+        float,
+        typer.Option("--probe-timeout"),
+    ] = 3.0,
     introspect: Annotated[
         bool,
         typer.Option(
             "--introspect",
-            help=("Start each configured STDIO server and call tools/list. Never calls a tool."),
+            help=(
+                "Start each configured STDIO server and call tools/list. "
+                "Never calls a tool."
+            ),
         ),
     ] = False,
     introspect_timeout: Annotated[
@@ -60,9 +111,15 @@ def scan(
     ] = None,
 ) -> None:
     """Discover configured MCP servers on this machine."""
-    roots = list(project_root) if project_root else []
     inv = run_scan(
-        project_roots=roots,
+        project_roots=list(project_root) if project_root else [],
+        compose_files=list(compose) if compose else [],
+        endpoints=list(endpoint) if endpoint else [],
+        cidrs=list(cidr) if cidr else [],
+        ports=list(port) if port else [],
+        use_docker=not no_docker,
+        probe_http=probe_http,
+        probe_timeout_s=probe_timeout,
         introspect=introspect,
         introspect_timeout_s=introspect_timeout,
         correlate_processes=not no_process,
@@ -79,9 +136,15 @@ def list_servers(
     ] = None,
 ) -> None:
     """Print server name, client, and transport only."""
-    roots = list(project_root) if project_root else []
     inv = run_scan(
-        project_roots=roots,
+        project_roots=list(project_root) if project_root else [],
+        compose_files=[],
+        endpoints=[],
+        cidrs=[],
+        ports=[],
+        use_docker=False,
+        probe_http=False,
+        probe_timeout_s=0,
         introspect=False,
         introspect_timeout_s=0,
         correlate_processes=False,

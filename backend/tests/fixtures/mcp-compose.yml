@@ -1,0 +1,10 @@
+services:
+  files:
+    image: example/mcp-filesystem:1
+    command: ["mcp-server", "--root", "/data"]
+    environment:
+      API_TOKEN: do-not-keep-this
+    ports:
+      - "127.0.0.1:3333:3333"
+  db:
+    image: postgres:16
